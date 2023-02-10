@@ -19,8 +19,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
-          cache: 'pnpm'
-      - run: pnpm add --global bun@latest
+
+      - run: npm install --global bun@latest
       - run: bun add --global @railway/cli@latest
       - name: Deploy to Railway
         run: railway up
