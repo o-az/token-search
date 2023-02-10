@@ -22,13 +22,11 @@ SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
 
 WORKDIR /usr/src/app
 
-# These deps are necessary to run lever-party and leveldown (apps/ingestion dependencies)
 RUN apt update --yes && \
   apt install --yes --no-install-recommends \
   sudo \
   curl \
   unzip \
-  sqlite3 \
   ca-certificates && \
   rm -rf /var/lib/apt/lists/* && \
   #
