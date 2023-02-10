@@ -46,8 +46,8 @@ RUN apt update --yes && \
   # Give permission to execute all files in /usr/src/app
   chmod -R 777 /usr/src/app
 
-# The port that Bao.js will listen on
 EXPOSE $PORT
-
+#
+# entrypoint has dependencies install command
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD [ "bun", "run", "start" ]
