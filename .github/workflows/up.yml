@@ -20,8 +20,10 @@ jobs:
         with:
           node-version: lts/*
 
-      - run: npm install --global bun@latest
-      - run: bun add --global @railway/cli@latest
+      - run: |
+          npm install --global bun@latest
+          npm install --global @railway/cli@latest
+
       - name: Deploy to Railway
         run: railway up
         env:
