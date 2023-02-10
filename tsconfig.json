@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "preserve",
+    "jsxFragmentFactory": "Fragment",
+    "jsxImportSource": "hono/jsx",
+    "types": ["bun-types"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*", "scripts/**/*", "./environment.d.ts"]
+}

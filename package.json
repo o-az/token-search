@@ -1,0 +1,36 @@
+{
+  "name": "token-search",
+  "author": "github@omaraziz.dev",
+  "scripts": {
+    "prestart": "bun run setup",
+    "start": "bun run --hot src/index.ts",
+    "setup": "bash ./scripts/setup.sh && bun ./scripts/setup.ts && bun ./scripts/seed.ts",
+    "seed": "bun ./scripts/seed.ts",
+    "lint": "eslint --fix . --ext .js,.cjs,.mjs,.ts --cache",
+    "format": "prettier --config .prettierrc.cjs . --ignore-path .eslintignore --write --ignore-unknown",
+    "clean": "sh ./scripts/clean.sh || true"
+  },
+  "dependencies": {
+    "hono": "^2.7.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230115.0",
+    "@tsconfig/node18-strictest-esm": "^1.0.1",
+    "@types/eslint": "^8.21.0",
+    "@types/node": "^18.13.0",
+    "@types/prettier": "^2.7.2",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "bun-types": "^0.5.6",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unicorn": "^45.0.2",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.8.4",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.5",
+    "wrangler": "2.9.1"
+  }
+}
