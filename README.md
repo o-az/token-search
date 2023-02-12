@@ -1,11 +1,11 @@
 # Endpoints
 
 - view all tokens of {chain}:
-  - `${BSAE_URL}/{chain}`
+  - `${BASE_URL}/{chain}`
 - get a specific token from {chain} using token {address}:
-  - `${BSAE_URL}/{chain}/token/{address}`
+  - `${BASE_URL}/{chain}/token/{address}`
 - same as above but token {address} as supplied as query parameter:
-  - `${BSAE_URL}/{chain}/token?address={address}`
+  - `${BASE_URL}/{chain}/token?address={address}`
 
 ---
 
