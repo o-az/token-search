@@ -6,10 +6,10 @@ ARG DEBCONF_NOWARNINGS="yes"
 ARG DEBCONF_TERSE="yes"
 ARG LANG="C.UTF-8"
 
-SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
-
 WORKDIR /usr/src/app
 COPY . /usr/src/app
+
+SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
 
 RUN apt update --yes && \
   #
