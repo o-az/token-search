@@ -1,17 +1,22 @@
-import { chains } from './constants';
+import { type Chain } from './types';
 
-const isProduction = process.env.RAILWAY_ENVIRONMENT && process.env.RAILWAY_ENVIRONMENT.length > 0;
-const BASE_URL = isProduction
-  ? 'https://token-search-production.up.railway.app'
-  : 'http://0.0.0.0:3003';
+const exampleTokenAddress = '0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab';
 
-export const IndexPage = () => (
-  <main>
+const Layout = (properties: { children?: string }) => (
+  <html style="background:#f0f3ff;">
+    <body>{properties.children}</body>
+  </html>
+);
+
+type IIndexPage = (properties: { baseURL: string; chains: ReadonlyArray<Chain> }) => string;
+
+export const IndexPage: IIndexPage = ({ baseURL, chains }) => (
+  <Layout>
     <h2>Supported Chains</h2>
     <ul>
       {chains.map(chain => (
         <li key={chain}>
-          <a href={`${BASE_URL}/${chain}?pretty`} target="_blank">
+          <a href={`${baseURL}/${chain}?pretty`} target="_blank">
             {chain}
           </a>
         </li>
@@ -19,27 +24,21 @@ export const IndexPage = () => (
     </ul>
     <h4>
       Try this example{' '}
-      <a
-        href={`${BASE_URL}/ethereum/token?address=0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab`}
-        target="_blank"
-      >
-        {BASE_URL}/ethereum/token?address=0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab
+      <a href={`${baseURL}/ethereum/token?address=${exampleTokenAddress}`} target="_blank">
+        {baseURL}/ethereum/token?address={exampleTokenAddress}
       </a>
       <br />
       <br />
       or this example{' '}
-      <a
-        href={`${BASE_URL}/ethereum/token/0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab`}
-        target="_blank"
-      >
-        {BASE_URL}/ethereum/token/0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab
+      <a href={`${baseURL}/ethereum/token/${exampleTokenAddress}`} target="_blank">
+        {baseURL}/ethereum/token/{exampleTokenAddress}
       </a>
       <br />
       <br />
       or see all tokens on ethereum{' '}
-      <a href={`${BASE_URL}/ethereum/tokens?pretty`} target="_blank">
-        {BASE_URL}/ethereum/tokens
+      <a href={`${baseURL}/ethereum/tokens?pretty`} target="_blank">
+        {baseURL}/ethereum/tokens
       </a>
     </h4>
-  </main>
+  </Layout>
 );

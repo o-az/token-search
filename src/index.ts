@@ -4,7 +4,7 @@ import { prettyJSON } from 'hono/pretty-json';
 import { IndexPage } from '@/landing';
 import { getAllTokens, getToken } from '@/database';
 import type { Chain } from './types';
-import { chains, invalidResponse } from './constants';
+import { baseURL, chains, invalidResponse } from './constants';
 
 const app = new Hono();
 
@@ -13,10 +13,9 @@ app.use('*', prettyJSON());
 
 app.notFound(context => context.json({ code: 404, message: 'Not found' }, 404));
 
-// Ideally don't want to pass the error to the client but well
 app.onError((error, context) => context.json({ code: 500, message: error.message }, 500));
 
-app.get('/', context => context.html(IndexPage()));
+app.get('/', context => context.html(IndexPage({ baseURL, chains })));
 
 // all tokens for :chain
 app.get('/:chain', context => {

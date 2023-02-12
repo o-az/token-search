@@ -15,13 +15,36 @@
 
 ## To get started locally
 
+### With Docker
+
 ```bash
-#
-# clone repo
 git clone https://github.com/o-az/token-search
+cd token-search
+#
+# build image
+docker build --no-cache --file ./Dockerfile --tag token_search . --progress=plain
+#
+# start container and expose port (make sure port 3003 is not in use)
+docker run --privileged --publish 3003:3003 --rm -it --detach --name token_search token_search
+#
+# query
+curl http://0.0.0.0:3003/ethereum
+#
+# to get inside the container and mess around
+docker exec --privileged -it token_search /bin/bash
+```
+
+### Locally w/o Docker
+
+```bash
+git clone https://github.com/o-az/token-search
+cd token-search
 #
 # install Bun if you don't already have it
 npm install --global bun@latest
+#
+# Upgrade Bun if not latest version
+bun upgrade
 #
 # install dependencies
 bun install
@@ -33,7 +56,7 @@ bun setup
 bun start
 ```
 
-### start querying
+### Start querying
 
 ```bash
 #

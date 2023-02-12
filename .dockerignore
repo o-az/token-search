@@ -9,3 +9,4 @@
 !scripts
 !**/scripts
 !**/*.sh
+node_modules.*
