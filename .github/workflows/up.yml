@@ -4,12 +4,19 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     shell: bash
 
 env:
   CI: true
+  # To see why it sometimes hangs at last step
+  # even though railway shows successful deployment
+  ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   Deploy:
