@@ -7,16 +7,13 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
   "eslint.enable": true,
-  "eslint.packageManager": "pnpm",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "mdx",
-    "toml"
   ],
   "eslint.options": {
-    "extensions": [".js", ".cjs", ".mjs", ".ts", ".cts", ".mts", ".jsx", ".tsx", ".mdx"]
+    "extensions": [".js", ".cjs", ".mjs", ".ts", ".cts", ".mts", ".jsx", ".tsx"]
   }
 }

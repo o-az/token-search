@@ -3,32 +3,52 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { IndexPage } from '@/landing';
 import { getAllTokens, getToken } from '@/database';
+import type { Chain } from './types';
+import { chains, invalidResponse } from './constants';
 
 const app = new Hono();
 
-app.use('*', prettyJSON());
 app.use('*', logger());
-
-app.get('/', context => context.html(IndexPage()));
+app.use('*', prettyJSON());
 
 app.notFound(context => context.json({ code: 404, message: 'Not found' }, 404));
 
 // Ideally don't want to pass the error to the client but well
 app.onError((error, context) => context.json({ code: 500, message: error.message }, 500));
 
-app.get('/tokens', context => context.json(getAllTokens()));
+app.get('/', context => context.html(IndexPage()));
 
-app.get('/token/:address', context => {
-  const address = context.req.param('address');
-  const token = getToken({ by: 'address', value: address });
-  return context.json(token);
+// all tokens for :chain
+app.get('/:chain', context => {
+  const chain = <Chain>context.req.param('chain');
+  if (!chains.includes(chain)) return context.json(invalidResponse.chain);
+  return context.json({ success: true, data: getAllTokens(chain) });
+});
+
+// also all tokens for :chain
+app.get('/:chain/tokens', context => {
+  const chain = <Chain>context.req.param('chain');
+  if (!chains.includes(chain)) return context.json(invalidResponse.chain);
+  return context.json({ success: true, data: getAllTokens(chain) });
+});
+
+// with address as path parameter
+app.get('/:chain/token/:address', context => {
+  const { chain, address } = <{ chain: Chain; address: string }>context.req.param();
+  if (!chains.includes(chain)) return context.json(invalidResponse.chain);
+  const token = getToken(chain, { by: 'address', value: address });
+  if (token.length === 0) return context.json(invalidResponse.token);
+  return context.json({ success: true, data: token });
 });
 
 // with address as query parameter
-app.get('/token', context => {
-  const address = context.req.query('address');
-  const token = getToken({ by: 'address', value: address });
-  return context.json(token);
+app.get('/:chain/token', context => {
+  const chain = <Chain>context.req.param('chain');
+  const { address } = context.req.query();
+  if (!chains.includes(chain)) return context.json(invalidResponse.chain);
+  const token = getToken(chain, { by: 'address', value: address });
+  if (token.length === 0) return context.json(invalidResponse.token);
+  return context.json({ success: true, data: token });
 });
 
 export default {

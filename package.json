@@ -4,10 +4,9 @@
   "homepage": "https://token-search-production.up.railway.app",
   "repository": "github:o-az/token-search",
   "scripts": {
-    "prestart": "bun run setup",
+    "prestart": "[ -f tokens.sqlite ] || (echo 'you need to run `bun setup` first' && exit 2)",
     "start": "bun run --hot src/index.ts",
-    "setup": "bash ./scripts/setup.sh && bun ./scripts/setup.ts && bun ./scripts/seed.ts",
-    "seed": "bun ./scripts/seed.ts",
+    "setup": "bash ./scripts/setup.sh",
     "lint": "eslint --fix . --ext .js,.cjs,.mjs,.ts --cache",
     "format": "prettier --config .prettierrc.cjs . --ignore-path .eslintignore --write --ignore-unknown",
     "clean": "sh ./scripts/clean.sh || true"

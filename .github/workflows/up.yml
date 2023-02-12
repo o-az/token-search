@@ -1,4 +1,4 @@
-name: CI
+name: Deploy to Railway
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 defaults:
   run:
-    shell: bash -euxo pipefail {0}
+    shell: bash
 
 env:
   CI: true
@@ -20,9 +20,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - run: |
-          npm install --global bun@latest
-          npm install --global @railway/cli@latest
+      - run: npm install --global @railway/cli@latest
 
       - name: Deploy to Railway
         run: railway up

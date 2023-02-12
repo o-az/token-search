@@ -5,9 +5,11 @@
  * `pnpm setup` will first run `./setup.sh`, head over to that file to see what it does.
  */
 
+import { chains } from '@/constants';
+import type { Chain } from '@/types';
 import { database } from '@/database';
 
-const createTableQuery = /*sql*/ `CREATE TABLE token (
+const createTableQuery = (chain: Chain) => /*sql*/ `CREATE TABLE ${chain} (
     address TEXT UNIQUE PRIMARY KEY,
     name TEXT,
     symbol TEXT,
@@ -18,4 +20,8 @@ const createTableQuery = /*sql*/ `CREATE TABLE token (
     native BOOLEAN
 )`;
 
-database.exec(createTableQuery);
+(() => {
+  for (const chain of chains) {
+    database.exec(createTableQuery(chain));
+  }
+})();

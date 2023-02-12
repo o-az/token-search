@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "jsxFragmentFactory": "Fragment",
     "jsxImportSource": "hono/jsx",

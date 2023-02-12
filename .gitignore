@@ -167,3 +167,7 @@ dist
 # wrangler project
 
 .dev.vars
+
+*.sqlite
+
+.DS_Store

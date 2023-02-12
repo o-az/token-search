@@ -1,7 +1,31 @@
-// would probably want to have this in a .env file. Skipping for the sake of this demo
-export const TOKEN_LIST_URL =
-  'https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/ethereum/tokenlist.json';
+import type { Chain } from '@/types';
 
-export const NATIVE_TOKENS = ['ETH', 'MATIC', 'OP', 'BNB'] as const;
+export const NATIVE_TOKENS = ['ETH', 'MATIC', 'OP', 'BNB', 'AVAX', 'FTM', 'ONE', 'CELO', 'XDAI'];
+export const chains = [
+  'ethereum',
+  'polygon',
+  'optimism',
+  'arbitrum',
+  'xdai',
+  'bsc',
+  'avax',
+  'fantom',
+  'harmony',
+  'celo',
+] as const;
 
-export const chains = ['ethereum', 'polygon', 'optimism', 'arbitrum'] as const;
+const actualSource = 'https://github.com/llamafolio/llamafolio-tokens';
+
+export const invalidResponse = {
+  chain: {
+    success: false,
+    data: `Invalid chain. See available chains here: ${actualSource}`,
+  },
+  token: {
+    success: false,
+    data: `Invalid token. See available tokens here: ${actualSource}`,
+  },
+};
+
+export const getTokenListURL = (chain: Chain) =>
+  `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/tokenlist.json`;

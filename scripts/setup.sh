@@ -2,8 +2,13 @@
 
 set -euox pipefail
 
-# Check if `tokens.sqlite` exists, if yes then rename to <datetime>_tokens.sqlite
+echo "Cleaning up last run's artifacts (if any)..."
+find . -name '*.sqlite' -exec rm -rf {} \;
 
-if [ -f tokens.sqlite ]; then
-  mv tokens.sqlite "$(date +%s)_tokens.sqlite"
-fi
+echo "Creating database tables..."
+bun ./src/database/setup.ts
+echo "Done creating tables"
+
+echo "Seeding database..."
+bun ./src/database/seed.ts
+echo "Done seeding"

@@ -1,27 +1,11 @@
 # Ignore everything
 *
-**/.env
-**/.env.*
-!.env.dev
 # DON'T ignore the following
 !**/package.json
-!**/pnpm-lock.yaml
 !**/tsconfig.json
 !.npmrc
 !.gitignore
 !src
 !scripts
-!bun.lockb
 !**/scripts
 !**/*.sh
-
-**/*.md
-**/*ignore
-**/*.cjs
-**/.pnpm-store
-dl_version
-**/*Dockerfile*
-**/*docker-compose*
-
-*.sqlite
-.eslintcache
