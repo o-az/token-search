@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 import { insertNewTokens } from '@/database';
 import { chains, getTokenListURL } from '@/constants';
 import type { Chain, Token } from '@/types';
@@ -7,7 +7,7 @@ import type { Chain, Token } from '@/types';
  * This script is intended to be run from the command line using the command `pnpm seed`
  */
 
-export async function fetchTokenList(chain: Chain) {
+async function fetchTokenList(chain: Chain) {
   const url = getTokenListURL(chain);
   const request = await fetch(url);
   const tokenList = (await request.json()) as Array<Token>;

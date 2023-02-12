@@ -40,5 +40,10 @@ export const IndexPage: IIndexPage = ({ baseURL, chains }) => (
         {baseURL}/ethereum/tokens
       </a>
     </h4>
+    <br />
+    <h4>Source code:</h4>
+    <a href="https://github.com/o-az/token-search" target="_blank">
+      https://github.com/o-az/token-search
+    </a>
   </Layout>
 );

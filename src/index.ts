@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
+import type { Chain } from '@/types';
 import { IndexPage } from '@/landing';
 import { getAllTokens, getToken } from '@/database';
-import type { Chain } from './types';
-import { baseURL, chains, invalidResponse } from './constants';
+import { baseURL, chains, invalidResponse } from '@/constants';
 
 const app = new Hono();
 
