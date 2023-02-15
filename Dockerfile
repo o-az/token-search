@@ -20,4 +20,4 @@ EXPOSE $PORT
 #
 # entrypoint has dependencies install command
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
-CMD [ "bun", "run", "start" ]
+CMD [ "bun", "run", "--hot", "./src/index.ts" ]

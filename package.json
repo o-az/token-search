@@ -12,14 +12,14 @@
     "clean": "sh ./scripts/clean.sh || true"
   },
   "dependencies": {
-    "hono": "^2.7.7"
+    "hono": "^2.7.8"
   },
   "devDependencies": {
-    "@types/eslint": "^8.21.0",
+    "@types/eslint": "^8.21.1",
     "@types/node": "^18.13.0",
     "@types/prettier": "^2.7.2",
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
-    "@typescript-eslint/parser": "^5.51.0",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
     "bun-types": "^0.5.6",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",

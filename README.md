@@ -34,7 +34,7 @@ curl http://0.0.0.0:3003/ethereum
 docker exec --privileged -it token_search /bin/bash
 ```
 
-### Locally w/o Docker
+### w/o Docker
 
 ```bash
 git clone https://github.com/o-az/token-search
@@ -75,4 +75,5 @@ curl http://0.0.0.0:3003/avax/tokens # all avax tokens
 #
 # etc
 ```
+
 _NOTE: the database is not persistant sicne I'm using railway.app where persistent storage is not available yet. This means all data is wiped on container restart (every deployment). But I don't care for this simple demo. If you want persistence, remove lines 5-6 in `./scripts/setup.sh` and use a different platform (fly.io, render.com, etc)_
