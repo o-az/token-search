@@ -12,7 +12,7 @@
     "clean": "sh ./scripts/clean.sh || true"
   },
   "dependencies": {
-    "hono": "^2.7.8"
+    "hono": "^3.0.0"
   },
   "devDependencies": {
     "@types/eslint": "^8.21.1",
