@@ -1,23 +1,25 @@
 FROM oven/bun
 
 ARG PORT=3003
-ARG DEBIAN_FRONTEND="noninteractive"
-ARG DEBCONF_NOWARNINGS="yes"
-ARG DEBCONF_TERSE="yes"
-ARG LANG="C.UTF-8"
+ENV ENV="production"
 
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+WORKDIR /app
+#
+# Copy "everything" -- most files will be ignored by .dockerignore
+COPY . .
 
 SHELL [ "/bin/bash", "-o", "pipefail", "-c" ]
 
-RUN apt update --yes && \
+# Give permission to execute all files in /app
+RUN chmod -R 777 /app && \
   #
-  # Give permission to execute all files in /usr/src/app
-  chmod -R 777 /usr/src/app
+  # Install dependencies
+  bun install --production && \
+  #
+  # don't need it anymore
+  rm -rf bun.lockb package.json
 
 EXPOSE $PORT
-#
-# entrypoint has dependencies install command
+
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
-CMD [ "bun", "run", "--hot", "./src/index.ts" ]
+CMD [ "bun", "run", "./src/index.ts" ]

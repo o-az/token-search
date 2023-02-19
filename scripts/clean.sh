@@ -9,6 +9,6 @@ echo "Removing all .sqlite files..."
 find . -name '*.sqlite' -exec rm -rf {} \;
 
 echo "Removing all lock files..."
-rm -rf package-lock.json yarn.lock pnpm-lock.yaml bun.*
+rm -rf package-lock.json yarn.lock pnpm-lock.yaml bun.* node_modules.bun
 
 echo "Done."

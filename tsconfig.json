@@ -7,7 +7,6 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "preserve",
-    "jsxFragmentFactory": "Fragment",
     "jsxImportSource": "hono/jsx",
     "types": ["bun-types"],
     "paths": {

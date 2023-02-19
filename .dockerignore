@@ -1,12 +1,10 @@
 # Ignore everything
 *
 # DON'T ignore the following
-!**/package.json
-!**/tsconfig.json
-!.npmrc
-!.gitignore
+!package.json
+!tsconfig.json
+# !.gitignore
 !src
-!scripts
-!**/scripts
+!scripts/entrypoint.sh
 !**/*.sh
-node_modules.*
+!bun.lockb

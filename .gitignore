@@ -27,23 +27,6 @@ lib-cov
 
 coverage
 \*.lcov
-
-# nyc test coverage
-
-.nyc_output
-
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-
-bower_components
-
-# node-waf configuration
-
-.lock-wscript
-
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 
 build/Release
@@ -52,10 +35,6 @@ build/Release
 
 node_modules/
 jspm_packages/
-
-# Snowpack dependency directory (https://snowpack.dev/)
-
-web_modules/
 
 # TypeScript cache
 
@@ -172,3 +151,5 @@ dist
 
 .DS_Store
 node_modules.*
+
+._

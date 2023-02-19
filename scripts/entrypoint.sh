@@ -2,16 +2,13 @@
 
 set -euox pipefail
 
-bun install
+echo "Creating database tables..."
+bun ./src/database/setup.ts
+echo "Done creating tables"
 
-#
-# this will generate node_modules.bun which contains all imported dependencies
-# so we can delete node_modules folder right after. https://github.com/oven-sh/bun#why-bundle
-bun bun ./src/index.ts
-
-rm -rf node_modules
-
-/bin/bash ./scripts/setup.sh
+echo "Seeding database..."
+bun ./src/database/seed.ts
+echo "Done seeding"
 
 #
 # this will allow the CMD in Dockerfile to be executed

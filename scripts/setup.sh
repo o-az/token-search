@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+#
+# this should run only when running locally
+# when in container, the entrypoint.sh will run and has the same-ish commands
+
 set -euox pipefail
 
 echo "Cleaning up last run's artifacts (if any)..."

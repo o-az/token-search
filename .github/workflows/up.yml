@@ -14,8 +14,6 @@ defaults:
 
 env:
   CI: true
-  # To see why it sometimes hangs at last step
-  # even though railway shows successful deployment
   ACTIONS_RUNNER_DEBUG: true
 
 jobs:

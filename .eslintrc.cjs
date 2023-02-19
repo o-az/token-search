@@ -15,7 +15,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
   ],
-  plugins: ['@typescript-eslint', 'simple-import-sort', 'unused-imports', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier'],
   settings: {},
   overrides: [],
   rules: {
@@ -53,8 +53,6 @@ module.exports = {
     'no-mixed-operators': ['off'],
     'no-multiple-empty-lines': ['off'],
     'no-unexpected-multiline': ['off'],
-    'sort-imports': ['warn', { ignoreDeclarationSort: true }],
-    'no-duplicate-imports': ['warn', { includeExports: true }],
     '@typescript-eslint/ban-ts-comment': ['off'],
     '@typescript-eslint/no-empty-interface': [
       'error',
