@@ -23,3 +23,4 @@ EXPOSE $PORT
 
 ENTRYPOINT [ "./scripts/entrypoint.sh" ]
 CMD [ "bun", "run", "./src/index.ts" ]
+
