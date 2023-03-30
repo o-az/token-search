@@ -2,7 +2,7 @@ import type { Chain } from '@/types'
 
 export const isProduction = process.env.RAILWAY_ENVIRONMENT && process.env.RAILWAY_ENVIRONMENT.length > 0
 
-export const baseURL = isProduction ? process.env.RAILWAY_STATIC_URL : 'http://0.0.0.0:3003'
+export const baseURL = isProduction ? 'https://token-search-production.up.railway.app' : 'http://0.0.0.0:3003'
 
 export const NATIVE_TOKENS = ['ETH', 'MATIC', 'OP', 'BNB', 'AVAX', 'FTM', 'ONE', 'CELO', 'XDAI']
 export const chains = [
