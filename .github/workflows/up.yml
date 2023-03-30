@@ -37,19 +37,3 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up
-
-      - name: Notify Discord
-        if: ${{ failure() }}
-        env:
-          AVATAR_URL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        run: |
-          curl \
-            --request 'POST' \
-            --header 'Content-Type: application/json' \
-            --form 'payload_json={ \
-                "username": "GitHub Actions", \
-                "avatar_url": "${AVATAR_URL}", \
-                "content": "Deployment to Railway failed" \
-              }' \
-            --form 'file1=@./railway.txt' \
-            ${{ secrets.DISCORD_WEBHOOK_URL }}

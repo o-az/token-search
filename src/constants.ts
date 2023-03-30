@@ -1,13 +1,10 @@
-import type { Chain } from '@/types';
+import type { Chain } from '@/types'
 
-export const isProduction =
-  process.env.RAILWAY_ENVIRONMENT && process.env.RAILWAY_ENVIRONMENT.length > 0;
+export const isProduction = process.env.RAILWAY_ENVIRONMENT && process.env.RAILWAY_ENVIRONMENT.length > 0
 
-export const baseURL = isProduction
-  ? 'https://token-search-production.up.railway.app'
-  : 'http://0.0.0.0:3003';
+export const baseURL = isProduction ? process.env.RAILWAY_STATIC_URL : 'http://0.0.0.0:3003'
 
-export const NATIVE_TOKENS = ['ETH', 'MATIC', 'OP', 'BNB', 'AVAX', 'FTM', 'ONE', 'CELO', 'XDAI'];
+export const NATIVE_TOKENS = ['ETH', 'MATIC', 'OP', 'BNB', 'AVAX', 'FTM', 'ONE', 'CELO', 'XDAI']
 export const chains = [
   'ethereum',
   'polygon',
@@ -19,9 +16,9 @@ export const chains = [
   'fantom',
   'harmony',
   'celo',
-] as const;
+] as const
 
-const actualSource = 'https://github.com/llamafolio/llamafolio-tokens';
+const actualSource = 'https://github.com/llamafolio/llamafolio-tokens'
 
 export const invalidResponse = {
   chain: {
@@ -32,7 +29,7 @@ export const invalidResponse = {
     success: false,
     data: `Invalid token. See available tokens here: ${actualSource}`,
   },
-};
+}
 
 export const getTokenListURL = (chain: Chain) =>
-  `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/tokenlist.json`;
+  `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/tokenlist.json`

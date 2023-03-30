@@ -1,3 +1,3 @@
-import { Database } from 'bun:sqlite';
+import { Database } from 'bun:sqlite'
 
-export const database = Database.open('tokens.sqlite', { create: true, readwrite: true });
+export const database = Database.open('tokens.sqlite', { create: true, readwrite: true })

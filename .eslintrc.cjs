@@ -9,12 +9,7 @@ module.exports = {
   },
   env: { node: true, browser: true },
   reportUnusedDisableDirectives: true,
-  extends: [
-    'eslint:recommended',
-    'plugin:unicorn/all',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'plugin:unicorn/all', 'plugin:@typescript-eslint/recommended', 'prettier'],
   plugins: ['@typescript-eslint', 'prettier'],
   settings: {},
   overrides: [],
@@ -77,4 +72,4 @@ module.exports = {
       },
     ],
   },
-};
+}
