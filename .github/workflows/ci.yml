@@ -1,4 +1,4 @@
-name: Deploy to Railway
+name: CI
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 defaults:
   run:
@@ -17,8 +16,8 @@ env:
   ACTIONS_RUNNER_DEBUG: true
 
 jobs:
-  deploy:
-    name: 'Deploy to railway.app'
+  checks:
+    name: 'Lint/Format/Typecheck'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -31,17 +30,13 @@ jobs:
           bun-version: 'latest'
 
       - name: Install Dependencies
-        run: |
-          bun add --global @railway/cli@latest
-          bun install
+        run: bun install
 
       - name: Lint
-        run: |
-          bun lint
-          bun format
-          bun typecheck
+        run: bun lint
 
-      - name: Deploy to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up
+      - name: Format
+        run: bun format
+
+      - name: Typecheck
+        run: bun typecheck

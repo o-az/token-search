@@ -3,9 +3,7 @@ import type { Chain, UnsupportedChain } from '@/types'
 export const isProduction =
 	process.env.RAILWAY_ENVIRONMENT && process.env.RAILWAY_ENVIRONMENT.length > 0
 
-export const baseURL = isProduction
-	? 'https://token-search-production.up.railway.app'
-	: 'http://0.0.0.0:3003'
+export const baseURL = isProduction ? 'https://tokens.up.railway.app' : 'http://0.0.0.0:3003'
 
 export type Chains = Record<Chain, { name: string; id: number; currency: string; explorer: string }>
 export type UnsupportedChains = Record<UnsupportedChain, Chains[keyof Chains]>

@@ -1,7 +1,7 @@
 {
 	"name": "token-search",
 	"author": "github@omaraziz.dev",
-	"homepage": "https://token-search-production.up.railway.app",
+	"homepage": "https://tokens.up.railway.app",
 	"repository": "github:o-az/token-search",
 	"bugs": "github:o-az/token-search/issues",
 	"scripts": {

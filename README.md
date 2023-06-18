@@ -11,7 +11,7 @@
 
 ---
 
-## Live demo: <https://token-search-production.up.railway.app>
+## Live demo: <https://tokens.up.railway.app>
 
 ---
 
