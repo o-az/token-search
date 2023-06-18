@@ -1,3 +1,5 @@
+## _**21,621** total tokens from 15 chains_
+
 # Endpoints
 
 - view all tokens of {chain}:

@@ -5,8 +5,8 @@ export const isProduction =
 
 export const baseURL = isProduction ? 'https://tokens.up.railway.app' : 'http://0.0.0.0:3003'
 
-export type Chains = Record<Chain, { name: string; id: number; currency: string; explorer: string }>
-export type UnsupportedChains = Record<UnsupportedChain, Chains[keyof Chains]>
+type Chains = Record<Chain, { name: string; id: number; currency: string; explorer: string }>
+type UnsupportedChains = Record<UnsupportedChain, Chains[keyof Chains]>
 
 export const chains = {
 	ethereum: {

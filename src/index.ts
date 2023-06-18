@@ -19,6 +19,15 @@ app.onError((error, context) => context.json({ code: 500, message: error.message
 
 app.get('/', (context) => context.html(IndexPage({ baseURL, chains })))
 
+// available chains
+app.get('/chains', (context) => context.json(chains))
+
+// everything
+app.get('/everything', (context) => {
+	const tokens = getAllTokens()
+	return context.json(tokens)
+})
+
 // all tokens for :chain
 app.get('/:chain', (context) => {
 	const chain = <Chain>context.req.param('chain')
@@ -62,11 +71,6 @@ app.get('/:chain/logo/:address', (context) => {
 	return context.html(/*html*/ `<img src="${token.logoURI}" />`)
 })
 
-// everything
-app.get('/everything', (context) => {
-	const tokens = getAllTokens()
-	return context.json(tokens)
-})
 
 export default {
 	port: process.env.PORT || 3003,
