@@ -6,6 +6,8 @@
   - `${BASE_URL}/{chain}/token/{address}`
 - same as above but token {address} as supplied as query parameter:
   - `${BASE_URL}/{chain}/token?address={address}`
+- get token logo by address:
+  - `${BASE_URL}/{chain}/logo/{address}`
 
 ---
 
@@ -64,15 +66,17 @@ bun start
 curl http://0.0.0.0:3003/ethereum/tokens
 #
 # one token by address
-curl http://0.0.0.0:3003/ethereum/token/0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab
+curl http://0.0.0.0:3003/optimism/token/0xc5b3ac2df8d8d7ac851f763a5b3ff23b4a696d59
 #
 # one token by address, as a query parameter
 #
-curl http://0.0.0.0:3003/ethereum/token?address=0x88acdd2a6425c3faae4bc9650fd7e27e0bebb7ab
+curl http://0.0.0.0:3003/optimism/token?address=0xc5b3ac2df8d8d7ac851f763a5b3ff23b4a696d59
 #
 # visit the link shown in the terminal, or curl
 curl http://0.0.0.0:3003/avax/tokens # all avax tokens
 #
+# get token logo
+curl http://0.0.0.0:3003/optimism/logo/0xc5b3ac2df8d8d7ac851f763a5b3ff23b4a696d59
 # etc
 ```
 

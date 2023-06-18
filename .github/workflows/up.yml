@@ -25,13 +25,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup bun 🍞
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 'lts/*'
+          bun-version: 'latest'
 
-      - name: Install Railway CLI
-        run: npm install --global @railway/cli@latest
+      - name: Install Dependencies
+        run: |
+          bun add --global @railway/cli@latest
+          bun install
+
+      - name: Lint
+        run: |
+          bun lint
+          bun format
+          bun typecheck
 
       - name: Deploy to Railway
         env:

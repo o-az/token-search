@@ -1,0 +1,35 @@
+{
+	"$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
+	"files": {
+		"ignore": ["**/node_modules", ".vscode"]
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"all": true,
+			"style": {
+				"useShorthandArrayType": "off"
+			},
+			"nursery": {
+				"noConsoleLog": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentSize": 1,
+		"lineWidth": 100,
+		"formatWithErrors": true
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingComma": "es5"
+		}
+	}
+}

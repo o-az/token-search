@@ -1,32 +1,26 @@
 {
-  "name": "token-search",
-  "author": "github@omaraziz.dev",
-  "homepage": "https://token-search-production.up.railway.app",
-  "repository": "github:o-az/token-search",
-  "scripts": {
-    "prestart": "[ -f tokens.sqlite ] || (echo 'you need to run `bun setup` first' && exit 2)",
-    "start": "bun run --hot src/index.ts",
-    "setup": "/bin/bash ./scripts/setup.sh",
-    "lint": "eslint --fix . --ext js,cjs,mjs,jsx,ts,cts,mts,tsx,d.ts --cache",
-    "format": "prettier . --ignore-path .eslintignore --write --ignore-unknown",
-    "clean": "/bin/sh ./scripts/clean.sh || true"
-  },
-  "dependencies": {
-    "hono": "^3.1.3"
-  },
-  "devDependencies": {
-    "@types/eslint": "^8.37.0",
-    "@types/node": "^18.15.11",
-    "@types/prettier": "^2.7.2",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
-    "bun-types": "^0.6.0",
-    "eslint": "^8.37.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-unicorn": "^47.0.0",
-    "prettier": "^2.8.7",
-    "typescript": "^5.0.2"
-  },
-  "license": "MIT"
+	"name": "token-search",
+	"author": "github@omaraziz.dev",
+	"homepage": "https://token-search-production.up.railway.app",
+	"repository": "github:o-az/token-search",
+	"bugs": "github:o-az/token-search/issues",
+	"scripts": {
+		"prestart": "[ -f tokens.sqlite ] || (echo 'you need to run `bun setup` first' && exit 2)",
+		"start": "bun run --hot src/index.ts",
+		"setup": "/bin/bash ./scripts/setup.sh",
+		"lint": "rome check . src --apply-unsafe",
+		"format": "rome format . src --write",
+		"typecheck": "tsc --project ./tsconfig.json --noEmit",
+		"clean": "/bin/sh ./scripts/clean.sh || true"
+	},
+	"dependencies": {
+		"hono": "^3.2.5"
+	},
+	"devDependencies": {
+		"@types/node": "^20.3.1",
+		"bun-types": "^0.6.9",
+		"rome": "^12.1.3",
+		"typescript": "^5.1.3"
+	},
+	"license": "GPL-3.0-or-later"
 }

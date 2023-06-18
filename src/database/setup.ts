@@ -5,22 +5,19 @@
  */
 
 import { chains } from '@/constants'
-import type { Chain } from '@/types'
 import { database } from '@/database'
+import type { Chain } from '@/types'
 
 const createTableQuery = (chain: Chain) => /*sql*/ `CREATE TABLE ${chain} (
     address TEXT UNIQUE PRIMARY KEY,
     name TEXT,
     symbol TEXT,
-    decimals INTEGER,
-    coingeckoId TEXT,
-    wallet BOOLEAN,
-    stable BOOLEAN,
-    native BOOLEAN
+    chainId INTEGER,
+    logoURI TEXT,
+    decimals INTEGER
 )`
-
 ;(() => {
-  for (const chain of chains) {
-    database.exec(createTableQuery(chain))
-  }
+	for (const chain in chains) {
+		database.exec(createTableQuery(chain as Chain))
+	}
 })()
