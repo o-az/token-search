@@ -1,11 +1,13 @@
 import { chains } from '@/constants'
-import { insertNewTokens } from '@/database'
+import { getDatabase, insertNewTokens } from '@/database'
 import type { Chain, Token } from '@/types'
 
 export default {
   async fetch(request: Request, env: Env, context: ExecutionContext) {
     const { DB, TOKEN_LIST_URLS } = env
     const { url } = request
+
+    const db = await getDatabase(DB)
 
     const seedResult = await seed(env)
     for (const chain in seedResult) {

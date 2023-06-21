@@ -1,33 +1,38 @@
-import type { Chain, Token } from '@/types'
-
 import { chains } from '@/constants'
-import { arrayToChunks, stringSize } from '@/utilities'
-import { Buffer } from 'node:buffer'
+import { getDatabase } from '@/database'
+import type { Chain, Token } from '@/types'
+import { arrayToChunks } from '@/utilities'
 
-export const getAllTokens = async (database: D1Database) => {
-  const query = Object.keys(chains)
-    .map((chain) => /*sql*/ `SELECT * FROM ${chain}`)
-    .join('\n UNION \n')
-  return (await database.prepare(query).all()).results as unknown as Array<Token>
+export async function getAllTokens(database: D1Database) {
+  const db = await getDatabase(database)
+  const chainNames = Object.keys(chains) as Array<Chain>
+  const tokens = await Promise.all(
+    chainNames.map(async (chain) => await db.selectFrom(chain).selectAll(chain).execute())
+  )
+  return tokens
 }
 
-export const getFirstToken = async ({
+export async function getFirstToken({
   database,
   chain,
 }: {
   chain: Chain
   database: D1Database
-}) => (await database.prepare(/*sql*/ `SELECT * FROM ${chain}`).first()) as unknown as Token
+}) {
+  const db = await getDatabase(database)
+  return await db.selectFrom(chain).limit(1).executeTakeFirst()
+}
 
-export const getAllChainTokens = async ({
+export async function getAllChainTokens({
   database,
   chain,
 }: {
   chain: Chain
   database: D1Database
-}) =>
-  (await database.prepare(/*sql*/ `SELECT * FROM ${chain}`).all())
-    .results as unknown as Array<Token>
+}) {
+  const db = await getDatabase(database)
+  return await db.selectFrom(chain).execute()
+}
 
 export const getToken = async <T extends keyof Token>({
   database,
@@ -38,14 +43,18 @@ export const getToken = async <T extends keyof Token>({
   chain: Chain
   database: D1Database
   by: T
-  value: Token[T]
+  value: string
 }): Promise<Array<Token>> => {
-  const query = database.prepare(/*sql*/ `SELECT * FROM ${chain} WHERE ${by} = ?`).bind(value)
-  const results = await query.first()
-  return results as unknown as Array<Token>
+  const db = await getDatabase(database)
+  return await db.selectFrom(chain).selectAll().where('address', '==', '').execute()
 }
 
-export const insertNewTokens = async ({
+export async function clearTable({ database, chain }: { chain: Chain; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).execute()
+}
+
+export async function insertNewTokens({
   database,
   chain,
   tokens,
@@ -53,62 +62,27 @@ export const insertNewTokens = async ({
   chain: Chain
   tokens: Array<Token>
   database: D1Database
-}) => {
-  const chunks = arrayToChunks(tokens, 600) // Assuming arrayToChunks is a function that splits the array into chunks
-  for (const chunk of chunks) {
-    const queriesValues = chunk.map(
-      ({ address, name, symbol, chainId, decimals, logoURI }) =>
-        `('${address}', '${name}', '${symbol}', ${chainId}, ${decimals}, '${logoURI}')`
-    )
-
-    let query = `INSERT OR REPLACE INTO ${chain} (address, name, symbol, chainId, decimals, logoURI) VALUES `
-    const joinedValues = queriesValues.join(', ')
-    if (stringSize(query + joinedValues) < 100_000) {
-      // Check if the query size is less than 100KB
-      query += joinedValues
-    } else {
-      // TODO
-    }
-    query += ';'
-
-    const result = await database.prepare(query).run()
-  }
-  return ''
-}
-
-// export const insertNewTokens = async ({
-//   database,
-//   chain,
-//   tokens,
-// }: {
-//   chain: Chain
-//   tokens: Array<Token>
-//   database: D1Database
-// }) => {
-//   const queriesValues = tokens.map(
-//     ({ address, name, symbol, chainId, decimals, logoURI }) =>
-//       `('${address}', '${name}', '${symbol}', ${chainId}, ${decimals}, '${logoURI}')`
-//   )
-
-//   const chunks = arrayToChunks(queriesValues, 600)
-//   for (const chunk of chunks) {
-//     console.log(chunks.length, chunk.join(', '))
-//     const query = await database
-//       .prepare(/*sql*/ `INSERT OR REPLACE INTO ${chain} VALUES ${chunk.join(', ')};`)
-//       .run()
-//     // console.log(JSON.stringify(query, undefined, 2))
-//   }
-
-//   return ''
-// }
-
-// check if table exists
-export const tableExists = async (database: D1Database) => {
+}) {
   try {
-    const query = database.prepare(/*sql*/ `SELECT * FROM ethereum`)
-    const { results } = await query.all()
-    return results.length > 0
-  } catch {
-    return false
+    const db = await getDatabase(database)
+    /**
+     * @cloudflare D1 SQLite limit is 100_000 bytes (100KB)
+     * @SQLite insert limit is 500 rows
+     */
+    const chunksSize = 80
+    const chunks = arrayToChunks(tokens, chunksSize)
+    for await (const chunk of chunks) {
+      await db
+        .insertInto(chain)
+        .values(chunk)
+        .onConflict((oc) => oc.doNothing())
+        .execute()
+    }
+
+    return 'success'
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : `Encoutered an error: ${error}`
+    console.trace(errorMessage)
+    return 'failed'
   }
 }

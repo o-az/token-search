@@ -4,4 +4,5 @@ interface Env {
   DB: D1Database
   TOKEN_LIST_URLS: string
   CLOUDFLARE_API_BASE_URL: string
+  API_KEY: string
 }

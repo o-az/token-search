@@ -1,5 +1,5 @@
 import { chainNames as chains, invalidResponse } from '@/constants'
-import { getAllChainTokens, getAllTokens, getToken } from '@/database'
+import { getAllChainTokens, getAllTokens, getDatabase, getToken } from '@/database'
 import { seed } from '@/database/seed'
 import { IndexPage } from '@/landing'
 import type { AppEnv, Chain } from '@/types'
@@ -22,15 +22,18 @@ app.onError((error, context) => context.json({ code: 500, message: error.message
 app.get('/', (context) => context.html(IndexPage({ baseURL: context.req.url, chains })))
 
 app.get('/seed', async (context) => {
-  const seeder = await seed(context.env)
-  return context.json(seeder)
+  const headerApiKey = context.req.headers.get('x-api-key')
+  if (headerApiKey !== context.env.API_KEY) return new Response('Unauthorized', { status: 401 })
+  const result = await seed(context.env)
+  if (!result) return new Response('No result', { status: 500 })
+  return context.text(result)
 })
 
 // available chains
 app.get('/chains', (context) => context.json(chains))
 
 // everything
-app.get('/everything', (context) => {
+app.get('/everything', async (context) => {
   const tokens = getAllTokens(context.env.DB)
   return context.json(tokens)
 })

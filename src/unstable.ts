@@ -14,6 +14,7 @@ describe('worker', () => {
         d1Databases: [
           {
             binding: 'DB',
+            // temp random id
             database_id: '4d98ac85-c841-4970-b8e0-74c40fdba428',
             database_name: 'tokens',
           },

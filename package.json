@@ -5,7 +5,7 @@
   "repository": "github:o-az/token-search",
   "bugs": "github:o-az/token-search/issues",
   "scripts": {
-		"prestart": "[ -f ./database/v3/d1/local-tokens-sqlite/db.sqlite ] || (echo 'you need to run `bun setup` first' && exit 2)",
+    "prestart": "[ -f ./database/v3/d1/local-tokens-sqlite/db.sqlite ] || (echo 'you need to run `bun setup` first' && exit 2)",
     "dev": "NO_D1_WARNING=true wrangler dev --experimental-json-config",
     "dev:remote": "pnpm dev --remote --experimental-json-config --config='./wrangler.json'",
     "prebuild": "rm -rf dist",
@@ -18,7 +18,9 @@
     "clean": "/bin/sh ./scripts/clean.sh || true"
   },
   "dependencies": {
-    "hono": "^3.2.5"
+    "hono": "^3.2.5",
+    "kysely": "^0.25.0",
+    "kysely-d1": "^0.3.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

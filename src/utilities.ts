@@ -1,3 +1,5 @@
+import { Buffer } from 'node:buffer'
+
 /**
  * Used to get SQL statement size to stay below limit
  * @cloudflare D1 limit is 100KB

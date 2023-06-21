@@ -61,7 +61,7 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'suc
     }
     for (const chain in tokensByChain) {
       const insertable = tokensByChain[chain as Chain]
-      insertNewTokens({ chain: chain as Chain, tokens: insertable, database })
+      await insertNewTokens({ chain: chain as Chain, tokens: insertable, database })
       console.log(`DONE -- inserted ${insertable.length} tokens into ${chain}`)
     }
     return 'success'
