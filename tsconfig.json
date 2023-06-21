@@ -1,22 +1,41 @@
 {
-	"compilerOptions": {
-		"module": "ESNext",
-		"target": "ESNext",
-		"moduleResolution": "bundler",
-		"verbatimModuleSyntax": true,
-		"resolveJsonModule": true,
-		"allowSyntheticDefaultImports": true,
-		"noUncheckedIndexedAccess": true,
-		"noPropertyAccessFromIndexSignature": true,
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"skipLibCheck": true,
-		"jsx": "preserve",
-		"jsxImportSource": "hono/jsx",
-		"types": ["bun-types", "node"],
-		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"include": ["src/**/*", "./environment.d.ts"],
-	"exclude": ["node_modules", "dist"]
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "sourceMap": false,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+    ],
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "types": [
+      "node",
+      "@cloudflare/workers-types"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "files": [
+    "./environment.d.ts",
+    "./worker-configuration.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

@@ -153,3 +153,5 @@ dist
 node_modules.*
 
 ._
+
+.wrangler

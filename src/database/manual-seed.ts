@@ -1,19 +1,32 @@
-#!/usr/bin/env bun
-
-/**
- * This is intended to be run as a script, not imported. It runs with the `bun setup` command.
- */
-
 import { chains } from '@/constants'
 import { insertNewTokens } from '@/database'
 import type { Chain, Token } from '@/types'
+
+export default {
+  async fetch(request: Request, env: Env, context: ExecutionContext) {
+    const { DB, TOKEN_LIST_URLS } = env
+    const { url } = request
+
+    const seedResult = await seed(env)
+    for (const chain in seedResult) {
+      await insertNewTokens({
+        chain: chain as Chain,
+        tokens: seedResult[chain as Chain],
+        database: DB,
+      })
+    }
+    return new Response('ok', {
+      status: 200,
+    })
+  },
+}
 
 type SeedDataShape = {
   [_: string]: unknown
   tokens: Array<Token & { extensions?: object }>
 }
 
-export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'success' | 'fail'> {
+export async function seed({ DB: database, TOKEN_LIST_URLS }: Env) {
   try {
     const chainIds = {}
     for (const chain in chains) {
@@ -59,15 +72,15 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'suc
         logoURI,
       })
     }
+    const payloadsByChain = {} as Record<Chain, Array<Token>>
     for (const chain in tokensByChain) {
       const insertable = tokensByChain[chain as Chain]
-      insertNewTokens({ chain: chain as Chain, tokens: insertable, database })
-      console.log(`DONE -- inserted ${insertable.length} tokens into ${chain}`)
+      payloadsByChain[chain as Chain] = insertable
     }
-    return 'success'
+    return payloadsByChain
   } catch (error) {
     console.dir(error, { depth: null })
-    return 'fail'
+    throw error
   }
 }
 
@@ -75,7 +88,7 @@ async function fetchTokenList(url: string) {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Failed to fetch tokenlist.json from ${url}`)
   const json = await response.json<SeedDataShape>()
-  console.log(`DONE -- fetched ${json.tokens.length} tokens from ${url}`)
+  // console.log(`DONE -- fetched ${json.tokens.length} tokens from ${url}`)
   return json.tokens
 }
 
