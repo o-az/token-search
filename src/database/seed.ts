@@ -4,9 +4,9 @@
  * This is intended to be run as a script, not imported. It runs with the `bun setup` command.
  */
 
-import { chains } from '@/constants'
-import { insertNewTokens } from '@/database'
-import type { Chain, Token } from '@/types'
+import { chains } from '#/constants'
+import { insertNewTokens } from '#/database'
+import type { Chain, Token } from '#/types'
 
 type SeedDataShape = {
   [_: string]: unknown

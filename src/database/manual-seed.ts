@@ -1,6 +1,6 @@
-import { chains } from '@/constants'
-import { getDatabase, insertNewTokens } from '@/database'
-import type { Chain, Token } from '@/types'
+import { chains } from '#/constants'
+import { getDatabase, insertNewTokens } from '#/database'
+import type { Chain, Token } from '#/types'
 
 export default {
   async fetch(request: Request, env: Env, context: ExecutionContext) {
@@ -9,14 +9,16 @@ export default {
 
     const db = await getDatabase(DB)
 
-    const seedResult = await seed(env)
-    for (const chain in seedResult) {
-      await insertNewTokens({
-        chain: chain as Chain,
-        tokens: seedResult[chain as Chain],
-        database: DB,
-      })
-    }
+    const result = await db.selectFrom('celo').execute()
+    console.log(result)
+    // const seedResult = await seed(env)
+    // for (const chain in seedResult) {
+    //   await insertNewTokens({
+    //     chain: chain as Chain,
+    //     tokens: seedResult[chain as Chain],
+    //     database: DB,
+    //   })
+    // }
     return new Response('ok', {
       status: 200,
     })

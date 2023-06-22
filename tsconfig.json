@@ -22,7 +22,7 @@
       "@cloudflare/workers-types"
     ],
     "paths": {
-      "@/*": [
+      "#/*": [
         "./src/*"
       ]
     }

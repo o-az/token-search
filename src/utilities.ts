@@ -1,5 +1,15 @@
 import { Buffer } from 'node:buffer'
 
+export const sleep = (milliseconds: number) =>
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds)
+
+export const isSettled = <T>(
+  promise: PromiseSettledResult<T>
+): promise is PromiseFulfilledResult<T> => promise.status === 'fulfilled'
+
+export const isRejected = <T>(promise: PromiseSettledResult<T>): promise is PromiseRejectedResult =>
+  promise.status === 'rejected'
+
 /**
  * Used to get SQL statement size to stay below limit
  * @cloudflare D1 limit is 100KB

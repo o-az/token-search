@@ -1,6 +1,6 @@
-import { chains } from '@/constants'
-import { getDatabase } from '@/database'
-import type { Chain } from '@/types'
+import { chains } from '#/constants'
+import { getDatabase } from '#/database'
+import type { Chain } from '#/types'
 
 export async function migrate(DB: Env['DB']) {
   const db = await getDatabase(DB)

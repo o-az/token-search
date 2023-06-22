@@ -1,4 +1,4 @@
-import type { Chain, UnsupportedChain } from '@/types'
+import type { Chain, UnsupportedChain } from '#/types'
 
 type Chains = Record<Chain, { name: string; id: number; currency: string; explorer: string }>
 type UnsupportedChains = Record<UnsupportedChain, Chains[keyof Chains]>

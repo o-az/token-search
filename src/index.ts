@@ -1,8 +1,8 @@
-import { chainNames as chains, invalidResponse } from '@/constants'
-import { getAllChainTokens, getAllTokens, getDatabase, getToken } from '@/database'
-import { seed } from '@/database/seed'
-import { IndexPage } from '@/landing'
-import type { AppEnv, Chain } from '@/types'
+import { chainNames as chains, invalidResponse } from '#/constants'
+import { getAllChainTokens, getAllTokens, getToken } from '#/database'
+import { seed } from '#/database/seed'
+import { IndexPage } from '#/landing'
+import type { AppEnv, Chain } from '#/types'
 
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -34,22 +34,24 @@ app.get('/chains', (context) => context.json(chains))
 
 // everything
 app.get('/everything', async (context) => {
-  const tokens = getAllTokens(context.env.DB)
+  const tokens = await getAllTokens(context.env.DB)
   return context.json(tokens)
 })
 
 // all tokens for :chain
-app.get('/:chain', (context) => {
+app.get('/:chain', async (context) => {
   const chain = <Chain>context.req.param('chain')
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
-  return context.json(getAllChainTokens({ chain, database: context.env.DB }))
+  const tokens = await getAllChainTokens({ chain, database: context.env.DB })
+  return context.json(tokens)
 })
 
 // also all tokens for :chain
-app.get('/:chain/tokens', (context) => {
+app.get('/:chain/tokens', async (context) => {
   const chain = <Chain>context.req.param('chain')
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
-  return context.json(getAllChainTokens({ chain, database: context.env.DB }))
+  const tokens = await getAllChainTokens({ chain, database: context.env.DB })
+  return context.json(tokens)
 })
 
 // with address as path parameter

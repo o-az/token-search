@@ -1,7 +1,8 @@
-import { chains } from '@/constants'
-import { getDatabase } from '@/database'
-import type { Chain, Token } from '@/types'
-import { arrayToChunks } from '@/utilities'
+import { chains } from '#/constants'
+import { type Database, getDatabase } from '#/database'
+import type { Chain, Token } from '#/types'
+import { arrayToChunks } from '#/utilities'
+import type { OperandValueExpressionOrList, ReferenceExpression } from 'kysely'
 
 export async function getAllTokens(database: D1Database) {
   const db = await getDatabase(database)
@@ -31,10 +32,11 @@ export async function getAllChainTokens({
   database: D1Database
 }) {
   const db = await getDatabase(database)
-  return await db.selectFrom(chain).execute()
+  const results = await db.selectFrom(chain).selectAll().execute()
+  return results
 }
 
-export const getToken = async <T extends keyof Token>({
+export async function getToken<T extends keyof Token>({
   database,
   chain,
   by,
@@ -42,11 +44,11 @@ export const getToken = async <T extends keyof Token>({
 }: {
   chain: Chain
   database: D1Database
-  by: T
-  value: string
-}): Promise<Array<Token>> => {
+  by: ReferenceExpression<Database, Chain>
+  value: OperandValueExpressionOrList<Database, Chain, T>
+}): Promise<Array<Token>> {
   const db = await getDatabase(database)
-  return await db.selectFrom(chain).selectAll().where('address', '==', '').execute()
+  return await db.selectFrom(chain).selectAll().where(by, '==', value).execute()
 }
 
 export async function clearTable({ database, chain }: { chain: Chain; database: D1Database }) {
