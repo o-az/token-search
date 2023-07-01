@@ -64,17 +64,20 @@ export const chains = {
     currency: 'BNB',
     explorer: 'https://bscscan.com',
   },
-  aurora: {
-    name: 'Aurora',
-    id: 1_313_161_554,
-    currency: 'NEAR',
-    explorer: 'https://explorer.aurora.dev',
-  },
   harmony: {
     name: 'Harmony One',
     id: 1_666_600_000,
     currency: 'ONE',
     explorer: 'https://explorer.harmony.one',
+  },
+} as const satisfies Chains
+
+export const unsupportedChains = {
+  aurora: {
+    name: 'Aurora',
+    id: 1_313_161_554,
+    currency: 'NEAR',
+    explorer: 'https://explorer.aurora.dev',
   },
   goerli: {
     name: 'Görli Testnet',
@@ -94,9 +97,7 @@ export const chains = {
     currency: 'ETH',
     explorer: 'https://goerli.etherscan.io',
   },
-} as const satisfies Chains
 
-export const unsupportedChains = {
   arbitrumNova: {
     name: 'Arbitrum Nova',
     id: 42_170,

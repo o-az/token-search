@@ -9,6 +9,13 @@ export interface Token {
   logoURI: string
 }
 
+export type RPC_Response<T = string> = {
+  jsonrpc: '2.0'
+  id: number | null
+  error?: { code: number; message: string }
+  result: T
+}
+
 export type Pretty<T> = {
   [K in keyof T]: T[K]
 } & {}
@@ -34,20 +41,16 @@ export type AtLeastOnePropertyOf<T> = {
 
 export type Chain =
   | 'gnosis'
-  | 'goerli'
   | 'polygon'
   | 'optimism'
-  | 'optimismGoerli'
   | 'ethereum'
   | 'celo'
   | 'moonbeam'
   | 'avalanche'
   | 'fantom'
   | 'bsc'
-  | 'aurora'
   | 'arbitrum'
   | 'harmony'
-  | 'baseGoerli'
 
 export type UnsupportedChain =
   /**
@@ -58,12 +61,16 @@ export type UnsupportedChain =
   | 'moonriver'
   | 'evmos'
   | 'avalancheFuji'
+  | 'baseGoerli'
+  | 'optimismGoerli'
   | 'fantomTestnet'
   | 'centoTestnet'
   | 'arbitrumNova'
   | 'bitorrnet'
   | 'cento'
   | 'arbitrumGoerli'
+  | 'aurora'
+  | 'goerli'
 
 export type AlmostAny =
   | string

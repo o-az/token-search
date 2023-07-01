@@ -13,17 +13,7 @@ DATABASE_NAME="tokens"
 echo "Cleaning up last run's artifacts (if any)..."
 find . -name '*.sqlite' -exec rm -rf {} \;
 
-echo "Creating database…"
-wrangler d1 \
-  migrations \
-  apply \
-  tokens \
-  --remote \
-  --experimental-json-config \
-  --config='./wrangler.json' \
-  --experimental-backend
-
-CHAINS="ethereum optimism gnosis arbitrum polygon celo moonbeam avalanche fantom bsc aurora harmony goerli optimismGoerli baseGoerli"
+CHAINS="ethereum optimism gnosis arbitrum polygon celo moonbeam avalanche fantom bsc harmony goerli"
 
 for chain in $CHAINS; do
   SQL_QUERY="CREATE TABLE $chain (

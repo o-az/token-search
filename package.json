@@ -12,25 +12,27 @@
     "build": "wrangler deploy --dry-run --experimental-json-config --config='wrangler.json' --outdir=dist",
     "deploy": "wrangler deploy ./src/index.ts --experimental-json-config --config='wrangler.json' --latest --outdir=dist",
     "setup": "/bin/bash ./scripts/setup.sh",
-    "database:convert": "sqlite3 database/v3/d1/local/db.sqlite .dump > database/db.sql",
+    "database:convert": "sqlite3 .wrangler/state/v3/d1/local/db.sqlite .dump > database/db.sql",
     "database:execute": "wrangler d1 execute tokens --file=database/db.sql --experimental-json-config --config='wrangler.json'",
     "migrations:create": "wrangler d1 migrations create tokens \"$(date '+%Y%m%d%H%M%S')\" --experimental-json-config --config='wrangler.json'",
     "migrations:apply": "wrangler d1 migrations apply tokens --experimental-json-config --config='wrangler.json'",
-    "lint": "rome check . src --apply-unsafe",
+    "lint": "rome check . src/**/*.ts --apply-unsafe",
     "format": "rome format . src --write",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "clean": "/bin/sh ./scripts/clean.sh || true"
   },
   "dependencies": {
-    "hono": "^3.2.6",
+    "hono": "^3.2.7",
     "kysely": "^0.25.0",
     "kysely-d1": "^0.3.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
-    "@types/node": "^20.3.1",
+    "@types/node": "^20.3.3",
+    "bun": "^0.6.12",
+    "bun-types": "^0.6.12",
     "rome": "^12.1.3",
-    "typescript": "^5.1.3",
+    "typescript": "^5.1.6",
     "wrangler": "^3.1.1"
   },
   "license": "GPL-3.0-or-later"

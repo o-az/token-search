@@ -5,15 +5,30 @@
  */
 
 import { chains } from '#/constants'
-import { insertNewTokens } from '#/database'
+import { getDatabase, insertNewTokens } from '#/database'
+import { ankrGetPrice } from '#/price'
 import type { Chain, Token } from '#/types'
+
+export default {
+  async fetch(request: Request, env: Env, context: ExecutionContext) {
+    const seedResult = await seed(env)
+    for (const chain in seedResult) {
+      await insertNewTokens({
+        chain: chain as Chain,
+        tokens: seedResult[chain as Chain],
+        database: env.DB,
+      })
+    }
+    return new Response('ok', { status: 200 })
+  },
+}
 
 type SeedDataShape = {
   [_: string]: unknown
   tokens: Array<Token & { extensions?: object }>
 }
 
-export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'success' | 'fail'> {
+export async function seed({ DB: database, TOKEN_LIST_URLS }: Env) {
   try {
     const chainIds = {}
     for (const chain in chains) {
@@ -23,12 +38,6 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'suc
     const tokenListURLs = <Array<string>>JSON.parse(TOKEN_LIST_URLS) ?? [TOKEN_LIST_URLS]
     const tokenLists = await getTokensList(tokenListURLs)
     const tokenList = tokenLists.flat()
-    // sort by has logoURI
-    tokenList.sort((a, b) => {
-      if (a.logoURI && !b.logoURI) return -1
-      if (!a.logoURI && b.logoURI) return 1
-      return 0
-    })
     // remove duplicates (prefer token that has logoURI if possible)
     const deduped = {} as Record<string, Token>
     const seen = new Set()
@@ -37,8 +46,8 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'suc
         seen.has(token.address.toLowerCase()) ||
         !chainIds[token.chainId] ||
         `${token.symbol}${token.name}`.includes('/') ||
-        `${token.name.toLowerCase()}${token.symbol.toLowerCase()}`.includes('factory') ||
-        JSON.stringify(token).includes('old')
+        `${token.name.toLowerCase()}${token.symbol.toLowerCase()}`.includes('scam') ||
+        JSON.stringify(token).toLowerCase().includes('[old]')
       )
         continue
       seen.add(token.address.toLowerCase())
@@ -59,15 +68,15 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env): Promise<'suc
         logoURI,
       })
     }
+    const payloadsByChain = {} as Record<Chain, Array<Token>>
     for (const chain in tokensByChain) {
       const insertable = tokensByChain[chain as Chain]
-      await insertNewTokens({ chain: chain as Chain, tokens: insertable, database })
-      console.log(`DONE -- inserted ${insertable.length} tokens into ${chain}`)
+      payloadsByChain[chain as Chain] = insertable
     }
-    return 'success'
+    return payloadsByChain
   } catch (error) {
     console.dir(error, { depth: null })
-    return 'fail'
+    throw error
   }
 }
 
@@ -78,30 +87,31 @@ async function fetchTokenList(url: string) {
   console.log(`DONE -- fetched ${json.tokens.length} tokens from ${url}`)
   return json.tokens
 }
-
-async function getTokensList(urls: Array<string>) {
-  const tokenLists = await Promise.all([...urls].map((url) => fetchTokenList(url)))
-  const reshapedTokenLists = await Promise.all(
-    Object.keys(chains).map((chain) => reshapeTokenList(chain as FolioChain))
-  )
-  tokenLists.push(...reshapedTokenLists)
-  return tokenLists
-}
+Reflect.ownKeys
 
 const folioChains = [
   'arbitrum',
   'avalanche',
   'bsc',
   'celo',
-  'ethereum',
+  // 'ethereum',
   'fantom',
   'gnosis',
   'moonbeam',
   'optimism',
-  'polygon',
+  // 'polygon',
   'harmony',
 ] as const
 type FolioChain = typeof folioChains[number]
+
+async function getTokensList(urls: Array<string>) {
+  const tokenLists = await Promise.all([...urls].map((url) => fetchTokenList(url)))
+  const reshapedTokenLists = await Promise.all(
+    folioChains.map((chain) => reshapeTokenList(chain as FolioChain))
+  )
+  tokenLists.push(...reshapedTokenLists)
+  return tokenLists
+}
 
 async function reshapeTokenList(chain: FolioChain) {
   if (!folioChains.includes(chain)) return []
@@ -125,5 +135,6 @@ async function reshapeTokenList(chain: FolioChain) {
     decimals: token.decimals,
     logoURI: `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/logos/${address.toLowerCase()}.png`,
   }))
+  console.log(`DONE -- fetched ${tokens.length} tokens from ${chain}`)
   return tokens
 }

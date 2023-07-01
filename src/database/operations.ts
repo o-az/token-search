@@ -88,3 +88,21 @@ export async function insertNewTokens({
     return 'failed'
   }
 }
+
+export async function removeRow({
+  database,
+  chain,
+  address,
+}: { chain: Chain; address: string; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).where(`${chain}.address`, '==', address).execute()
+}
+
+export async function removeRows({
+  database,
+  chain,
+  addresses,
+}: { chain: Chain; addresses: Array<string>; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).where(`${chain}.address`, 'in', addresses).execute()
+}

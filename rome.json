@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
   "files": {
-    "ignore": ["**/node_modules", ".wrangler", ".vscode", "dist"]
+    "ignore": ["**/node_modules", ".wrangler", ".vscode", "dist", "_", "./database"],
+    "maxSize": 4194304
   },
   "organizeImports": {
     "enabled": true

@@ -5,5 +5,6 @@ declare namespace NodeJS {
     TOKEN_LIST_URLS: string
     // Cloudflare Workers default environment variables
     CLOUDFLARE_API_BASE_URL: string
+    ANKR_API_KEY: string
   }
 }

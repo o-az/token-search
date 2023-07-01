@@ -155,6 +155,4 @@ node_modules.*
 ._
 
 .wrangler
-database/*
-!database/.gitkeep
-!database/migrations
+database

@@ -19,6 +19,7 @@
     "jsxImportSource": "hono/jsx",
     "types": [
       "node",
+      "bun-types",
       "@cloudflare/workers-types"
     ],
     "paths": {
@@ -28,7 +29,9 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "scripts/**/*",
+    "database/**/*",
   ],
   "files": [
     "./environment.d.ts",

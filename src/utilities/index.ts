@@ -1,7 +1,18 @@
+export * from './fetchers.js'
+import { chains } from '#/constants'
+import type { Chain } from '#/types'
 import { Buffer } from 'node:buffer'
 
-export const sleep = (milliseconds: number) =>
-  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds)
+export const apiKey = (key: keyof Env, env?: Env) =>
+  env?.[key] ? env[key] : process.env[key] ? process.env[key] : ''
+
+export const isChain = (chain: string): chain is Chain => chain in chains
+
+export function sleep(milliseconds: number): void {
+  typeof Atomics === 'undefined'
+    ? new Promise((resolve) => setTimeout(resolve, milliseconds))
+    : Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.max(1, milliseconds | 0))
+}
 
 export const isSettled = <T>(
   promise: PromiseSettledResult<T>

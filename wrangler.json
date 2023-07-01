@@ -6,14 +6,15 @@
   "compatibility_flags": ["nodejs_compat"],
   "placement": { "mode": "smart" },
   "vars": {
-    "TOKEN_LIST_URLS": "['https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/coingecko.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/messari.json','https://static.optimism.io/optimism.tokenlist.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/tokenlistooor.json','https://raw.githubusercontent.com/celo-org/celo-token-list/main/celo.tokenlist.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/defillama.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/portals.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/paraswap.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/1inch.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/yearn-extended.json','https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/wido.json']"
+    "TOKEN_LIST_URLS": "['https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/defillama.json']"
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "tokens",
       "database_id": "425069ed-706b-48e3-af18-addb807c68ea",
-      "preview_database_id": "local"
+      "preview_database_id": "local",
+      "migrations_dir": "./database/migrations"
     }
   ]
 }
