@@ -1,7 +1,7 @@
 import type { Chain } from './types'
 import { html } from 'hono/html'
 
-const exampleTokenAddress = '0xc5b3ac2df8d8d7ac851f763a5b3ff23b4a696d59'
+const exampleTokenAddress = '0x2e3d870790dc77a83dd1d18184acc7439a53f475'
 
 const LineBreak = () => html`<br /><br />`
 
@@ -25,7 +25,7 @@ export function IndexPage({ baseURL, chains }: { baseURL: string; chains: Readon
       <h4>
         Try this example{' '}
         <a
-          href={`${baseURL}optimism/token?address=${exampleTokenAddress}&pretty`}
+          href={`${baseURL}optimism/token?address=${exampleTokenAddress}`}
           target='_blank'
           rel='noreferrer'
         >
@@ -34,7 +34,7 @@ export function IndexPage({ baseURL, chains }: { baseURL: string; chains: Readon
         <LineBreak />
         or this example{' '}
         <a
-          href={`${baseURL}optimism/token/${exampleTokenAddress}?pretty`}
+          href={`${baseURL}optimism/token/${exampleTokenAddress}`}
           target='_blank'
           rel='noreferrer'
         >

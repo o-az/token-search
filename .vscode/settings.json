@@ -34,5 +34,6 @@
     // cloudflare workers local .env
     ".dev.vars": "dotenv",
     ".dev.vars.example": "dotenv",
+    "tsconfig.json": "json",
   },
 }

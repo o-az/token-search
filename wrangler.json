@@ -1,5 +1,5 @@
 {
-  "$schema": "https://gist.githubusercontent.com/o-az/d298a1776165407ba63ee763d32f7a89/raw/704fd08b3e9187cb9262850dd024235ca869165c/wrangler.json",
+  "$schema": "https://gist.githubusercontent.com/o-az/d298a1776165407ba63ee763d32f7a89/raw/509659a55fc732c12a8047ffc92fb2e1a96aeebb/wrangler.json",
   "name": "tokens",
   "main": "./src/index.ts",
   "compatibility_date": "2023-06-20",

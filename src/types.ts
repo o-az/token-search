@@ -1,4 +1,4 @@
-export type AppEnv = Pretty<Env>
+export type Environment = Pretty<Env>
 
 export interface Token {
   address: string
@@ -9,35 +9,6 @@ export interface Token {
   logoURI: string
 }
 
-export type RPC_Response<T = string> = {
-  jsonrpc: '2.0'
-  id: number | null
-  error?: { code: number; message: string }
-  result: T
-}
-
-export type Pretty<T> = {
-  [K in keyof T]: T[K]
-} & {}
-
-export type Truthy<T> = Pick<
-  T,
-  {
-    [K in keyof T]: T[K] extends undefined | null ? never : K
-  }[keyof T]
->
-
-export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
-
-// XOR - One or the other, but not both
-export type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U
-
-// AtLeastOnePropertyOf - One or more of the properties
-export type AtLeastOnePropertyOf<T> = {
-  [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, undefined>> extends infer U
-    ? { [P in keyof U]: U[P] }
-    : never
-}[keyof T]
 
 export type Chain =
   | 'gnosis'
@@ -71,6 +42,37 @@ export type UnsupportedChain =
   | 'arbitrumGoerli'
   | 'aurora'
   | 'goerli'
+
+
+export type RPC_Response<T = string> = {
+  jsonrpc: '2.0'
+  id: number | null
+  error?: { code: number; message: string }
+  result: T
+}
+
+export type Pretty<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+export type Truthy<T> = Pick<
+  T,
+  {
+    [K in keyof T]: T[K] extends undefined | null ? never : K
+  }[keyof T]
+>
+
+export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
+
+// XOR - One or the other, but not both
+export type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U
+
+// AtLeastOnePropertyOf - One or more of the properties
+export type AtLeastOnePropertyOf<T> = {
+  [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, undefined>> extends infer U
+    ? { [P in keyof U]: U[P] }
+    : never
+}[keyof T]
 
 export type AlmostAny =
   | string

@@ -156,3 +156,4 @@ node_modules.*
 
 .wrangler
 database
+*.log

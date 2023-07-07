@@ -1,3 +1,6 @@
 {
-  "recommendations": ["rome.rome"]
+  "recommendations": [
+    "rome.rome",
+    "github.vscode-github-actions"
+  ]
 }
