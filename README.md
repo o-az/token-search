@@ -3,6 +3,8 @@
 #### - using [Hono](https://hono.dev/) web framework,
 #### - and [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite) for database
 
+_Note: for address balance retrieval check https://github.com/o-az/evm-balances_
+
 # Endpoints
 
 - view all tokens of {chain}:
