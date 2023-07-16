@@ -1,4 +1,7 @@
-## _**21,621** total tokens from 15 chains_
+
+#### - Deployed on [Cloudflare Workers](https://workers.cloudflare.com/),
+#### - using [Hono](https://hono.dev/) web framework,
+#### - and [Cloudflare D1](https://developers.cloudflare.com/d1/) (SQLite) for database
 
 # Endpoints
 
