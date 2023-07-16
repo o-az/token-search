@@ -16,27 +16,49 @@ env:
   ACTIONS_RUNNER_DEBUG: true
 
 jobs:
-  checks:
-    name: 'Lint/Format/Typecheck'
+  deploy:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['lts/*']
+        pnpm-version: ['latest']
+        os: ['ubuntu-latest']
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
+      - name: 🔑 Checkout
         uses: actions/checkout@v3
 
-      - name: Setup bun 🍞
-        uses: oven-sh/setup-bun@v1
+      - name: 🥐 Setup pnpm [${{ matrix.pnpm-version }}]
+        uses: pnpm/action-setup@v2.2.4
         with:
-          bun-version: 'latest'
+          version: ${{ matrix.pnpm-version }}
 
-      - name: Install Dependencies
-        run: bun install
+      - name: ⎔ Setup Node.js [${{ matrix.node-version }}]
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-      - name: Lint
-        run: bun lint
+      - name: '📦 Install Dependencies'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm add --global wrangler@beta
 
-      - name: Format
-        run: bun format
+      - name: '🧹 Lint'
+        run: pnpm lint
 
-      - name: Typecheck
-        run: bun typecheck
+      - name: '🧹 Format'
+        run: pnpm format
+
+      - name: '🧪 Typecheck'
+        run: pnpm typecheck
+
+      - name: '🔧 Build'
+        run: pnpm build
+
+      - name: '🔸 Cloudflare Workers - Deploy 🚀'
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          wrangler deploy ./src/index.ts --experimental-json-config

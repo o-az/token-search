@@ -1,0 +1,5 @@
+NODE_ENV='development'
+PORT=3003
+BASE_URL=''
+TOKEN_LIST_URLS=''
+DATABASE_ID=''

@@ -13,7 +13,7 @@
 
 ---
 
-## Live demo: <https://tokens.up.railway.app>
+## Live demo: <https://tokens.evm.workers.dev>
 
 ---
 

@@ -1,46 +1,108 @@
-import { database } from './init'
-import type { AlmostAny, Chain, Token } from '@/types'
-import { prepend$ToKeys } from '@/utilities'
-import type { SQLQueryBindings } from 'bun:sqlite'
+import { chains } from '#/constants'
+import { type Database, getDatabase } from '#/database'
+import type { Chain, Token } from '#/types'
+import { arrayToChunks } from '#/utilities'
+import type { OperandValueExpressionOrList, ReferenceExpression } from 'kysely'
 
-import { chains } from '@/constants'
-
-export const getAllTokens = () => {
-	const query = Object.keys(chains)
-		.map((chain) => /*sql*/ `SELECT * FROM ${chain}`)
-		.join('\n UNION \n')
-	return database.query<Array<Token>, Array<SQLQueryBindings>>(query).all()
+export async function getAllTokens(database: D1Database) {
+  const db = await getDatabase(database)
+  const chainNames = Object.keys(chains) as Array<Chain>
+  const tokens = await Promise.all(
+    chainNames.map(async (chain) => await db.selectFrom(chain).selectAll(chain).execute())
+  )
+  return tokens
 }
 
-export const getFirstToken = (chain: Chain) =>
-	database.query<Array<Token>, Array<SQLQueryBindings>>(/*sql*/ `SELECT * FROM ${chain}`).get()
-
-export const getAllChainTokens = (chain: Chain) =>
-	database.query<Array<Token>, Array<SQLQueryBindings>>(/*sql*/ `SELECT * FROM ${chain}`).all()
-
-export const getToken = <T extends keyof Token>(
-	chain: Chain,
-	{
-		by,
-		value,
-	}: {
-		by: T
-		value: Token[T]
-	}
-): Array<Token> => {
-	const query = database.query<Token, Array<SQLQueryBindings>>(
-		/*sql*/ `SELECT * FROM ${chain} WHERE ${by} = ?`
-	)
-	return query.all(value)
+export async function getFirstToken({
+  database,
+  chain,
+}: {
+  chain: Chain
+  database: D1Database
+}) {
+  const db = await getDatabase(database)
+  return await db.selectFrom(chain).limit(1).executeTakeFirst()
 }
 
-// insert new tokens / rows
-export const insertNewTokens = (chain: Chain, tokens: Array<Token>) => {
-	const insert = database.prepare<Array<Token>, SQLQueryBindings>(/*sql*/ `INSERT INTO ${chain}
-      (address, name, symbol, chainId, logoURI, decimals)
-      VALUES ($address, $name, $symbol, $chainId, $logoURI, $decimals)`)
-	const insertMany = database.transaction((tokens) =>
-		tokens.map((token: AlmostAny) => insert.run(token))
-	)
-	return insertMany(tokens.map((token) => prepend$ToKeys(token)))
+export async function getAllChainTokens({
+  database,
+  chain,
+}: {
+  chain: Chain
+  database: D1Database
+}) {
+  const db = await getDatabase(database)
+  const results = await db.selectFrom(chain).selectAll().execute()
+  return results
+}
+
+export async function getToken<T extends keyof Token>({
+  database,
+  chain,
+  by,
+  value,
+}: {
+  chain: Chain
+  database: D1Database
+  by: ReferenceExpression<Database, Chain>
+  value: OperandValueExpressionOrList<Database, Chain, T>
+}): Promise<Array<Token>> {
+  const db = await getDatabase(database)
+  return await db.selectFrom(chain).selectAll().where(by, '==', value).execute()
+}
+
+export async function clearTable({ database, chain }: { chain: Chain; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).execute()
+}
+
+export async function insertNewTokens({
+  database,
+  chain,
+  tokens,
+}: {
+  chain: Chain
+  tokens: Array<Token>
+  database: D1Database
+}) {
+  try {
+    const db = await getDatabase(database)
+    /**
+     * @cloudflare D1 SQLite limit is 100_000 bytes (100KB)
+     * @SQLite insert limit is 500 rows
+     */
+    const chunksSize = 80
+    const chunks = arrayToChunks(tokens, chunksSize)
+    for await (const chunk of chunks) {
+      await db
+        .insertInto(chain)
+        .values(chunk)
+        .onConflict((oc) => oc.doNothing())
+        .execute()
+    }
+
+    return 'success'
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : `Encoutered an error: ${error}`
+    console.trace(errorMessage)
+    return 'failed'
+  }
+}
+
+export async function removeRow({
+  database,
+  chain,
+  address,
+}: { chain: Chain; address: string; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).where(`${chain}.address`, '==', address).execute()
+}
+
+export async function removeRows({
+  database,
+  chain,
+  addresses,
+}: { chain: Chain; addresses: Array<string>; database: D1Database }) {
+  const db = await getDatabase(database)
+  return await db.deleteFrom(chain).where(`${chain}.address`, 'in', addresses).execute()
 }

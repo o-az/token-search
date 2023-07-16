@@ -6,13 +6,36 @@
 
 set -euox pipefail
 
+source .env
+
+DATABASE_NAME="tokens"
+
 echo "Cleaning up last run's artifacts (if any)..."
 find . -name '*.sqlite' -exec rm -rf {} \;
 
-echo "Creating database tables..."
-bun ./src/database/setup.ts
-echo "Done creating tables"
+CHAINS="ethereum optimism gnosis arbitrum polygon celo moonbeam avalanche fantom bsc harmony goerli"
 
-echo "Seeding database..."
-bun ./src/database/seed.ts
-echo "Done seeding"
+for chain in $CHAINS; do
+  SQL_QUERY="CREATE TABLE $chain (
+    address TEXT UNIQUE PRIMARY KEY,
+    name TEXT,
+    symbol TEXT,
+    chainId INTEGER,
+    decimals INTEGER,
+    logoURI TEXT
+  )"
+
+  echo "Creating table for $chain"
+
+  wrangler d1 \
+    execute \
+    $DATABASE_NAME \
+    --local \
+    --command="$SQL_QUERY" \
+    --experimental-json-config \
+    --config='./wrangler.json' \
+    --json \
+    --yes
+done
+
+echo "Done!"
