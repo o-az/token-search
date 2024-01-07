@@ -1,31 +1,32 @@
 {
   "search.exclude": {
-    "**/node_modules": true,
-    "pnpm-lock.yaml": true,
+    "**/node_modules": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "git.enableCommitSigning": true,
   "git.autofetch": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "rome.rome",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.codeActionsOnSave": {
-    "source.organizeImports.rome": true
+    "source.organizeImports.biome": true,
+    "source.fixAll.biome": true,
+    "quickfix.biome": true
   },
   "[json]": {
-    "editor.defaultFormatter": "rome.rome"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "rome.rome",
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "rome.rome"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "rome.rome"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "rome.rome"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
@@ -34,6 +35,6 @@
     // cloudflare workers local .env
     ".dev.vars": "dotenv",
     ".dev.vars.example": "dotenv",
-    "tsconfig.json": "json",
-  },
+    "tsconfig.json": "json"
+  }
 }

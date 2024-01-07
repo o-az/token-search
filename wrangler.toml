@@ -1,0 +1,18 @@
+#: schema https://github.com/cloudflare/workers-sdk/files/12887590/wrangler.schema.json
+# https://developers.cloudflare.com/workers/wrangler/configuration
+name = "tokens"
+main = "./src/index.ts"
+minify = true
+keep_vars = true
+node_compat = true
+placement = { mode = "smart" }
+compatibility_date = "2023-10-30"
+
+[vars]
+TOKEN_LIST_URLS = "['https://raw.githubusercontent.com/Migratooor/tokenLists/main/lists/defillama.json']"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tokens"
+database_id = "425069ed-706b-48e3-af18-addb807c68ea"
+migrations_dir = "./database/migrations"
