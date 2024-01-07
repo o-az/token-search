@@ -10,7 +10,7 @@ export const isChain = (chain: string): chain is Chain => chain in chains
 
 export function sleep(milliseconds: number): void {
   typeof Atomics === 'undefined'
-    ? new Promise((resolve) => setTimeout(resolve, milliseconds))
+    ? new Promise(resolve => setTimeout(resolve, milliseconds))
     : Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.max(1, milliseconds | 0))
 }
 

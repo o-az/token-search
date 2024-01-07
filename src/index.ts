@@ -20,8 +20,8 @@ app.use(
     cacheControl: cacheHeader({
       maxAge: '1week',
       staleIfError: '1.5week',
-      staleWhileRevalidate: '1year',
-    }),
+      staleWhileRevalidate: '1year'
+    })
   })
 )
 
@@ -41,7 +41,7 @@ app.onError((error, context) => {
   return context.json({ message: error.message }, 500)
 })
 
-app.get('/env', (context) => {
+app.get('/env', context => {
   if (context.env['NODE_ENV'] !== 'development') {
     return new Response(JSON.stringify({ NODE_ENV: 'production' }, undefined, 2), { status: 418 })
   }
@@ -49,7 +49,7 @@ app.get('/env', (context) => {
   return context.text(JSON.stringify(context.env, undefined, 2))
 })
 
-app.get('/error', (context) => {
+app.get('/error', context => {
   console.log({ path: context.req.path, url: context.req.url, error: context.error })
   return context.json({ message: 'ok' })
 })
@@ -59,28 +59,28 @@ app.post('/auth', async (_, next) => {
   const authorized = true
   if (!authorized)
     throw new HTTPException(401, {
-      res: new Response('Unauthorized', { status: 401 }),
+      res: new Response('Unauthorized', { status: 401 })
     })
   await next()
 })
 
-app.get('/routes', (context) => {
+app.get('/routes', context => {
   app.showRoutes() // <-- this logs routes to console
   return context.json(app.routes)
 })
 
-app.get('/', (context) => context.html(IndexPage({ baseURL: context.req.url, chains })))
+app.get('/', context => context.html(IndexPage({ baseURL: context.req.url, chains })))
 
 // available chains
-app.get('/chains', (context) => context.json(chains))
-app.get('/supported-chains', (context) => context.json(Object.keys(chains)))
+app.get('/chains', context => context.json(chains))
+app.get('/supported-chains', context => context.json(Object.keys(chains)))
 
 // everything
-app.get('/all', async (context) => context.json(await getAllTokens(context.env.DB)))
-app.get('/everything', async (context) => context.json(await getAllTokens(context.env.DB)))
+app.get('/all', async context => context.json(await getAllTokens(context.env.DB)))
+app.get('/everything', async context => context.json(await getAllTokens(context.env.DB)))
 
 // all tokens for :chain
-app.get('/:chain', async (context) => {
+app.get('/:chain', async context => {
   const chain = <Chain>context.req.param('chain')
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
   const tokens = await getAllChainTokens({ chain, database: context.env.DB })
@@ -88,7 +88,7 @@ app.get('/:chain', async (context) => {
 })
 
 // also all tokens for :chain
-app.get('/:chain/tokens', async (context) => {
+app.get('/:chain/tokens', async context => {
   const chain = <Chain>context.req.param('chain')
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
   const tokens = await getAllChainTokens({ chain, database: context.env.DB })
@@ -96,21 +96,21 @@ app.get('/:chain/tokens', async (context) => {
 })
 
 // with address as path parameter
-app.get('/:chain/token/:address', async (context) => {
+app.get('/:chain/token/:address', async context => {
   const { chain, address } = <{ chain: Chain; address: string }>context.req.param()
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
   const [token] = await getToken({
     database: context.env.DB,
     chain,
     by: 'address',
-    value: address,
+    value: address
   })
   if (!token) return context.json(invalidResponse.token)
   return context.json(token)
 })
 
 // with address as query parameter
-app.get('/:chain/token', async (context) => {
+app.get('/:chain/token', async context => {
   const chain = <Chain>context.req.param('chain')
   const { address } = context.req.query()
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
@@ -118,21 +118,21 @@ app.get('/:chain/token', async (context) => {
     database: context.env.DB,
     chain,
     by: 'address',
-    value: address,
+    value: address
   })
   if (!token) return context.json(invalidResponse.token)
   return context.json(token)
 })
 
 // token logo
-app.get('/:chain/logo/:address', async (context) => {
+app.get('/:chain/logo/:address', async context => {
   const { chain, address } = <{ chain: Chain; address: string }>context.req.param()
   if (!chains.includes(chain)) return context.json(invalidResponse.chain)
   const [token] = await getToken({
     database: context.env.DB,
     chain,
     by: 'address',
-    value: address,
+    value: address
   })
   if (!token) return context.json(invalidResponse.token)
   if (!token.logoURI) return context.json({ message: 'Not found' }, 404)

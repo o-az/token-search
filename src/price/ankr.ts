@@ -12,10 +12,10 @@ export async function ankrGetPrice(chain: Chain, addresses?: string[]) {
   >({
     url: `https://rpc.ankr.com/multichain/${apiKey('ANKR_API_KEY')}/?ankr_getPrice=`,
     method: 'ankr_getTokenPrice',
-    params: addresses.map((address) => ({
+    params: addresses.map(address => ({
       blockchain: chain === 'ethereum' ? 'eth' : chain,
-      address,
-    })),
+      address
+    }))
   })
   return result
 }
@@ -35,9 +35,9 @@ async function getAnkrTokens(chain: Chain) {
     method: 'ankr_getCurrencies',
     params: [
       {
-        blockchain: chain === 'ethereum' ? 'eth' : chain,
-      },
-    ],
+        blockchain: chain === 'ethereum' ? 'eth' : chain
+      }
+    ]
   })
   return result
 }

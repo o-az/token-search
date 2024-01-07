@@ -16,11 +16,11 @@ export default {
       await insertNewTokens({
         chain: chain as Chain,
         tokens: seedResult[chain as Chain],
-        database: env.DB,
+        database: env.DB
       })
     }
     return new Response('ok', { status: 200 })
-  },
+  }
 }
 
 type SeedDataShape = {
@@ -65,7 +65,7 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env) {
         symbol,
         name,
         decimals,
-        logoURI,
+        logoURI
       })
     }
     const payloadsByChain = {} as Record<Chain, Array<Token>>
@@ -83,7 +83,7 @@ export async function seed({ DB: database, TOKEN_LIST_URLS }: Env) {
 async function fetchTokenList(url: string) {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`Failed to fetch tokenlist.json from ${url}`)
-  const json = await response.json<SeedDataShape>()
+  const json = (await response.json()) as SeedDataShape
   console.log(`DONE -- fetched ${json.tokens.length} tokens from ${url}`)
   return json.tokens
 }
@@ -100,14 +100,14 @@ const folioChains = [
   'moonbeam',
   'optimism',
   // 'polygon',
-  'harmony',
+  'harmony'
 ] as const
-type FolioChain = typeof folioChains[number]
+type FolioChain = (typeof folioChains)[number]
 
 async function getTokensList(urls: Array<string>) {
-  const tokenLists = await Promise.all([...urls].map((url) => fetchTokenList(url)))
+  const tokenLists = await Promise.all([...urls].map(url => fetchTokenList(url)))
   const reshapedTokenLists = await Promise.all(
-    folioChains.map((chain) => reshapeTokenList(chain as FolioChain))
+    folioChains.map(chain => reshapeTokenList(chain as FolioChain))
   )
   tokenLists.push(...reshapedTokenLists)
   return tokenLists
@@ -119,21 +119,20 @@ async function reshapeTokenList(chain: FolioChain) {
     `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/tokenlist.json`
   )
   if (!response.ok) throw new Error('Failed to fetch token list')
-  const json = await response.json<
-    Array<{
-      address: string
-      name: string
-      symbol: string
-      decimals: number
-    }>
-  >()
+  const json = (await response.json()) as Array<{
+    address: string
+    name: string
+    symbol: string
+    decimals: number
+  }>
+
   const tokens = json.map(({ address, ...token }) => ({
     chainId: chains[chain].id,
     address: address.toLowerCase(),
     name: token.name,
     symbol: token.symbol,
     decimals: token.decimals,
-    logoURI: `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/logos/${address.toLowerCase()}.png`,
+    logoURI: `https://raw.githubusercontent.com/llamafolio/llamafolio-tokens/master/${chain}/logos/${address.toLowerCase()}.png`
   }))
   console.log(`DONE -- fetched ${tokens.length} tokens from ${chain}`)
   return tokens

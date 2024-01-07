@@ -6,7 +6,7 @@ export async function erc20Method({
   chain,
   address,
   method,
-  env,
+  env
 }: {
   chain: Chain
   address: string
@@ -35,15 +35,15 @@ export async function erc20Method({
               decimals: '313ce567',
               symbol: '95d89b41',
               name: '06fdde03',
-              totalSupply: '18160ddd',
+              totalSupply: '18160ddd'
             }[method]
-          }`,
+          }`
         },
-        'latest',
-      ],
-    }),
+        'latest'
+      ]
+    })
   })
-  const data = await response.json<RPC_Response>()
+  const data = (await response.json()) as RPC_Response
   if (data.error) throw new Error(data.error.message)
   const { result } = data
   if (result === '0x') return '0'
@@ -67,13 +67,13 @@ export async function hasBalanceOf(chain: Chain, address: string, env?: Env) {
       params: [
         {
           to: address,
-          data: `0x70a08231`,
+          data: `0x70a08231`
         },
-        'latest',
-      ],
-    }),
+        'latest'
+      ]
+    })
   })
-  const data = await response.json<RPC_Response>()
+  const data = (await response.json()) as RPC_Response
   if (data.error) throw new Error(data.error.message)
   const { result } = data
   if (result === '0x') return false
@@ -96,13 +96,13 @@ export async function hasBalanceOfBatch(chain: Chain, addresses: string[], env?:
         params: [
           {
             to: address,
-            data: `0x70a08231`,
+            data: `0x70a08231`
           },
-          'latest',
-        ],
+          'latest'
+        ]
       }))
-    ),
+    )
   })
-  const data = await response.json<Array<RPC_Response>>()
+  const data = (await response.json()) as Array<RPC_Response>
   return data.map(({ result }) => (result === '0x' ? false : true))
 }

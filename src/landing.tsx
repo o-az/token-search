@@ -16,7 +16,7 @@ export function IndexPage({ baseURL, chains }: { baseURL: string; chains: Readon
     <Layout>
       <h2 style='font-weight:900;'>Supported Chains</h2>
       <ul>
-        {chains.map((chain) => (
+        {chains.map(chain => (
           <li key={chain}>
             <Link href={`${baseURL}${chain}?pretty`} text={chain} />
           </li>

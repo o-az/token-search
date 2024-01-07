@@ -9,7 +9,6 @@ export interface Token {
   logoURI: string
 }
 
-
 export type Chain =
   | 'gnosis'
   | 'polygon'
@@ -42,7 +41,6 @@ export type UnsupportedChain =
   | 'arbitrumGoerli'
   | 'aurora'
   | 'goerli'
-
 
 export type RPC_Response<T = string> = {
   jsonrpc: '2.0'

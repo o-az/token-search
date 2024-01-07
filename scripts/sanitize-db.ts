@@ -26,7 +26,7 @@ export default {
     const results = []
     const errors = []
     for (const chunk of chunks) {
-      const addresses = chunk.map((row) => row.address)
+      const addresses = chunk.map(row => row.address)
       try {
         const hasBalanceOfs = await hasBalanceOfBatch(pathParam as Chain, addresses, env)
 
@@ -39,7 +39,7 @@ export default {
         })
       } catch (error) {
         console.error(error)
-        errors.push(...chunk.map((_) => _.address))
+        errors.push(...chunk.map(_ => _.address))
       } finally {
         sleep(5)
       }
@@ -53,7 +53,7 @@ export default {
         const deleteRows = await removeRows({
           database: env.DB,
           chain: pathParam,
-          addresses: chunk,
+          addresses: chunk
         })
         console.log(JSON.stringify(deleteRows, undefined, 2))
       } catch (error) {
@@ -64,11 +64,11 @@ export default {
     return new Response(
       JSON.stringify({
         errors,
-        results,
+        results
       }),
       {
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json' }
       }
     )
-  },
+  }
 }
